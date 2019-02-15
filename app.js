@@ -44,7 +44,7 @@ app.use(methodOverride('_method'))
 
 app.use(
   session({
-    secret: 'Secret codeword!',
+    secret: process.env.SECRET_KEY,
     // make cookies tied to this session die after one duration
     cookie: { maxAge: 600000 },
     // saveUnitialized: false only allocates space when it is needed, not by default
@@ -56,6 +56,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(flash());
+require('dotenv').config();
 
 const flashMiddleware = (req, res, next) => {
   res.locals.success_msg = req.flash('success_msg');
