@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+    <% include partials/head %>
+  <body>
+    <% include partials/header %>
+    <main class="container d-flex justify-content-center">
+      <form method="POST" action="/cms/addProduct" class="productForm" enctype="multipart/form-data">
+        <input type="text" name="name" placeholder="Name" />
+        <br>
+        <textarea name="desc" placeholder="Description"></textarea>
+        <br>
+        <input type="number" name="price" min="0.00" max="10000.00" step="0.01" placeholder="Price" />
+        <br>
+        <input type="number" name="quantity" placeholder="Quantity" />
+        <br>
+        <input type="file" name="file" />
+        <br>
+        <input type="submit" value="Save Product" />
+      </form>
+    </main>
+    <% include partials/footer %>
+  </body>
+</html>

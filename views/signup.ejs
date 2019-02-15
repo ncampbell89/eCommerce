@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+    <% include partials/head %>
+  <body>
+    <% include partials/header %>
+    <div class="container w-50 mt-3 mb-3 p-4 rounded border border-dark">
+      <h3 class="text-center">Sign Up</h3>
+      
+      <% if(error_msg != false){ %>
+      <div class="alert alert-danger"><%= error_msg %></div>
+      <% } %>
+
+      <form method="POST" action="/users/createUser">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" class="form-control" id="username" placeholder="Enter Username" name="username" />
+        </div>
+        
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" class="form-control" id="password" placeholder="Enter Password" name="password" />
+        </div>  
+
+        <div class="form-group">
+          <label for="password">Re-Enter Password</label>
+          <input type="password" class="form-control" id="re-password" placeholder="Re-Enter Password" name="re-password" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>  
+    </div>
+    <% include partials/footer %>
+  </body>
+</html>

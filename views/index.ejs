@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <% include partials/head %>
+<body>
+  <% include partials/header %>
+  
+  <div class="container">
+    
+    <div class="buttons">
+      <button class="asc">ASCEND</button>
+      <button class="desc">DESCEND</button>
+    </div>
+    
+    <div class="products">
+      <% for(let i = 1; i <= 8; i++) { %> 
+          <img src="images/noImage.png" class="noImage">
+      <% } %>
+    </div>
+    
+  </div>
+  
+  <% include partials/footer %>
+
+</body>
+</html>

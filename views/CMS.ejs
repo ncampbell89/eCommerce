@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+    <% include partials/head %>
+  <body>
+    <% include partials/header %>
+    <main class="container">
+      <div class="products">
+<!--        <%= prodData %>-->
+         <% for(let prod of prodData){ %>
+            <div class="product">
+                <label><%=prod.name%></label>
+                <div class="imgContainer">
+                  <img src="<%=prod.imgPath%>" class="pic" border="0"/>
+                </div>
+                <label>Price: $<%=prod.price%></label>
+                <p><%=prod.desc%></p>
+              
+                <button class="btn btn-success" onclick="addToCart('<%= prod._id %>', `<%= prod.name %>`, <%= prod.price %>)">Add to Cart</button>
+            </div>
+         <% }%>
+      </div> <br/>
+    </main>
+    
+    <script>
+      function addToCart(id, name, price) {
+        const cart = JSON.parse(localStorage.getItem('cart'));
+        
+        if(cart) {
+          // If the cart already exists, add the new ID to it
+          for(let i = 0; i < cart.length; i++) {
+            if(cart[i].id === id) {
+              cart[i].count++;
+              localStorage.setItem('cart', JSON.stringify(cart));
+              return; // If we found the item, break out the function
+            }
+          }
+          // If we haven't found it, add it as a new item
+          cart.push({ id, count: 1, name, price });
+          localStorage.setItem('cart', JSON.stringify(cart));
+        } else {
+          // If the cart does not exist, create a new one and store it in localStorage
+          localStorage.setItem('cart', JSON.stringify([{ id, count: 1, name, price }]));
+        }
+        
+      }
+    </script>
+    <% include partials/footer %>
+
+  </body>
+</html>

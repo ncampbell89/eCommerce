@@ -1,0 +1,36 @@
+<header>
+    <% if(locals.signedIn) { %> 
+        <img src="../../images/logo-placeholder.png">
+        <h1>Arts &amp; Crafts Ecommerce</h1>
+  
+        <nav>
+          <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about">About</a></li>
+            <li><a href="">Support</a></li>
+            <li><a href="/cart">Cart</a></li>
+            <li><a href="/CMS/addProduct">Add Product</a></li>
+          </ul>
+        </nav>
+  
+        <div id="sign">
+          <a href="/signout">Sign Out</a>
+        </div>
+    <% } else { %>
+        <img src="../../images/logo-placeholder.png">
+        <h1>Arts &amp; Crafts Ecommerce</h1>
+  
+        <nav>
+          <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about">About</a></li>
+            <li><a href="">Support</a></li>
+            <li><a href="/cart">Cart</a></li>
+          </ul>
+        </nav>
+  
+        <div id="sign">
+          <a href="/signin">Sign In</a> | <a href="/signup">Sign Up</a>
+        </div>
+    <% } %>
+      </header>

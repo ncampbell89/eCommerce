@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+    <% include partials/head %>
+  <body>
+    <% include partials/header %>
+
+    <main class="container mx-auto w-50 mx-4 py-4">
+      <div class="panel panel-default">
+        <div class="panel-heading"><h2>Your Items</h2></div>
+        <div class="panel-body">
+          <p>Review your selections here, then select your payment option.</p>
+        </div>
+
+        <ul class="list-group" id="itemList"></ul>
+        <button class="btn btn-danger my-2 btn-sm" onclick="clearCart()">Clear Cart</button>
+        <script src="https://checkout.stripe.com/checkout.js"></script>
+        <button id="paymentButton" class="btn btn-sm btn-primary">
+          Pay with Card
+        </button>
+      </div>
+    </main>
+
+    <script>
+      function clearCart() {
+        localStorage.setItem('cart', null); // Clear the cart out of local storage
+        window.location.href = '/cart'; // Refresh the page
+      }
+      
+      let total = 0;
+      const cart = JSON.parse(localStorage.getItem('cart'));
+      const itemList = document.querySelector('#itemList');
+      
+      if (cart) {
+        for (item of cart) {
+          total += item.price * item.count;
+          itemList.innerHTML += `<li class="list-group-item">${item.name} x ${item.count}: \$${(item.count * item.price).toFixed(2)}
+          <button onclick="incDec('${item.id}', 'inc')"> + </button>
+          <button onclick="incDec('${item.id}', 'dec')"> - </button>
+          <button onclick="incDec('${item.id}', 'remove')" class="float-right btn-danger"> x </button></li>`;
+          
+        }
+      } else {
+        itemList.innerHTML = `<li class="list-group-item">You don't have any items in your cart</li>`;
+      }
+      
+      itemList.innerHTML += 
+        `<li class="list-group-item"><span class="float-right">Total: \$${total.toFixed(2)}</span></li>`;
+      
+      var handler = StripeCheckout.configure({
+        key: 'pk_test_exu2eRUoFuEdEbtQk2wpBbLJ',
+        image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
+        locale: 'auto',
+        token: function(token) {
+          // You can access the token ID with `token.id`.
+          // Get the token ID to your server-side code for use.
+          const body = {
+            cart: cart,
+            token: token
+          };
+          console.log(body);
+          fetch('/checkout', {
+            method: 'POST',
+            body: JSON.stringify(body),
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          })
+            .then(resp => resp.json())
+            .then(data => {
+              console.log('Successful checkout!');
+            })
+            .catch(err => {
+              console.log('failed checkout!');
+            });
+        }
+      });
+      document
+        .getElementById('paymentButton')
+        .addEventListener('click', function(e) {
+          // Open Checkout with further options:
+          handler.open({
+            name: 'Crafts Checkout',
+            description: 'Thanks for shopping!',
+            amount: total * 100
+          });
+          e.preventDefault();
+        });
+      // Close Checkout on page navigation:
+      window.addEventListener('popstate', function() {
+        handler.close();
+      });
+      
+      // incDesc(${item._id}, 'inc')
+      function incDec(id, flag) {
+        if(flag == 'inc') {
+          for(let i = 0; i < cart.length; i++) {
+            if(cart[i].id == id) {
+              cart[i].count++;
+            }
+          }
+        } else if(flag == 'dec') {
+          for(let i = 0; i < cart.length; i++) {
+            if(cart[i].id == id && cart[i].count > 0) {
+              cart[i].count--;
+            }
+          }
+        } else if(flag == 'remove') {
+          for(let i = 0; i < cart.length; i++) {
+            if(cart[i].id == id) {
+              cart.splice(i, 1);
+            }
+          }
+        }
+        localStorage.setItem('cart', JSON.stringify(cart));
+        window.location.href = '/cart';
+        return;
+      }
+      // document.querySelector('main').innerHTML = localStorage.getItem('cart');
+    </script>
+    <% include partials/footer %> <% include partials/bootstrap-scripts %>
+  </body>
+</html>
